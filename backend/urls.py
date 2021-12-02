@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,4 +15,6 @@ urlpatterns = [
     path('applications/', include("applications.urls")),
     path('useractivity/', include("useractivity.urls")),
     path('searches/', include("searches.urls")),
+    path('', views.home, name="home"),
+    path('result/', views.result, name="result")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

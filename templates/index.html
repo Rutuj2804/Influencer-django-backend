@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    this is my home pageeee
+
+
+    <form action="{%url 'result' %}">
+        {% csrf_token %}
+
+        Followers:<input type="text" required name="Followers"> <br> <br>
+        hired rate:<input type="text" required name="hired rate"> <br> <br>
+        hours worked:<input type="text" required name="hours worked"> <br> <br>
+        accuracy:<input type="text" required name="accuracy"> <br> <br>
+
+
+        <input type="submit" name="" value="submit">
+    </form>
+</body>
+</html>
