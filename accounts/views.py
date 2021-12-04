@@ -5,6 +5,9 @@ from .models import Account, Skill, Link
 from rest_framework.permissions import AllowAny
 from .serializers import AccountSerializer
 from rest_framework.authtoken.models import Token
+import joblib
+from applications.models import Application
+from useractivity.models import TimeSpend
 
 
 class RegisterUser(APIView):
@@ -95,7 +98,25 @@ class GetUserApiView(APIView):
     def get(self, request, format=None):
         try:
             user = self.request.user
+            applications = Application.objects.filter(applicant=user)
+            hired_rate = 0
+            no_of_applications = 0
+            for application in applications:
+                if application.status == 'hired':
+                    hired_rate = hired_rate + 1
+                no_of_applications = no_of_applications + 1
+            hired_rate = hired_rate * 100 / no_of_applications
+            time_spend = TimeSpend.objects.filter(user=user)
+            hours_spend = 0
+            for time_elem in time_spend:
+                hours_spend = hours_spend + time_elem.time
+            hours_spend = hours_spend / 60
             user = Account.objects.get(username=user)
+            model = joblib.load("influmodel.sav")
+            badge = model.predict([[no_of_applications, hired_rate, hours_spend, user.rate * 20]])
+            print(badge)
+            user.badge = badge
+            user.save()
             serialzer = AccountSerializer(user)
             return Response(serialzer.data)
         except:

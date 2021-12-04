@@ -73,6 +73,7 @@ class Account(AbstractBaseUser):
     online = models.BooleanField(default=False)
     links = models.ManyToManyField(Link)
     description = models.TextField(verbose_name="Description")
+    badge = models.IntegerField(default=1)
     rate = models.IntegerField(default=0)
     raters_count = models.ManyToManyField("self")
     points = models.IntegerField(default=1)
