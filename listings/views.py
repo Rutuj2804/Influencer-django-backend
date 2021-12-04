@@ -417,11 +417,11 @@ class ListingDetailViewAnalytics(APIView):
             for application_instance in project_list:
                 if application_instance.applicant.badge == 1:
                     application_badges[0] = application_badges[0] + 1
-                elif 101 < application_instance.applicant.badge == 2:
+                elif application_instance.applicant.badge == 2:
                     application_badges[1] = application_badges[1] + 1
-                elif 301 < application_instance.applicant.badge == 3:
+                elif application_instance.applicant.badge == 3:
                     application_badges[2] = application_badges[2] + 1
-                elif 501 < application_instance.applicant.badge == 4:
+                elif application_instance.applicant.badge == 4:
                     application_badges[3] = application_badges[3] + 1
                 elif application_instance.applicant.points == 5:
                     application_badges[4] = application_badges[4] + 1
@@ -429,6 +429,7 @@ class ListingDetailViewAnalytics(APIView):
             rates = [0, 0, 0, 0, 0]
             rating_labels = ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars']
             for application_instance in project_list:
+                print(application_instance.applicant.rate)
                 if application_instance.applicant.rate == 1:
                     rates[0] = rates[0] + 1
                 elif application_instance.applicant.rate == 2:
