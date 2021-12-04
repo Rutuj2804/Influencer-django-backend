@@ -484,3 +484,16 @@ class ApplyToListing(APIView):
             return Response({'success': 'Successfully Submitted Application'}, status=status.HTTP_201_CREATED)
         except:
             return Response({'error': 'Error in submitting response'})
+
+
+class FetchDisplayUsersListings(APIView):
+
+    def post(self, request, format=None):
+        try:
+            data = self.request.data
+            user = Account.objects.get(username=data['username'])
+            listings = Project.objects.filter(user=user)
+            serializers = ProjectSerializer(listings, many=True)
+            return Response({'listings': serializers.data}, status=status.HTTP_201_CREATED)
+        except:
+            return Response({'error': 'Error in fetching response'}, status=status.HTTP_404_BAD_REQUEST)

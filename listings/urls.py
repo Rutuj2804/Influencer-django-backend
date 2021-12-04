@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateListing, UpdateListing, GetListings, GetListingsDetailView, FetchMyListings, ApplyToListing, HiredInProjectAPIView, ListingDetailViewAnalytics, ListingAnalytics, StaticticsAnalytics, TopPerformers, DeleteListing, FilterDataOfListing, GetRecentListings, GetHiredRatings, RateUserByOrganisation
+from .views import CreateListing, UpdateListing, GetListings, GetListingsDetailView, FetchMyListings, ApplyToListing, HiredInProjectAPIView, ListingDetailViewAnalytics, ListingAnalytics, StaticticsAnalytics, TopPerformers, DeleteListing, FilterDataOfListing, GetRecentListings, GetHiredRatings, RateUserByOrganisation, FetchDisplayUsersListings
 
 urlpatterns = [
     path('create/', CreateListing.as_view()),
@@ -18,4 +18,5 @@ urlpatterns = [
     path('analytics/', ListingAnalytics.as_view()),
     path('user-analytics/', StaticticsAnalytics.as_view()),
     path('top-performers/', TopPerformers.as_view()),
+    path('get-listings-user/', FetchDisplayUsersListings.as_view()),
 ]
