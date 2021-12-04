@@ -415,15 +415,15 @@ class ListingDetailViewAnalytics(APIView):
             badge_labels = ['Yellow', 'Red', 'Blue', 'Green', 'Pro']
             application_badges = [0, 0, 0, 0, 0]
             for application_instance in project_list:
-                if application_instance.applicant.points < 100:
+                if application_instance.applicant.badge == 1:
                     application_badges[0] = application_badges[0] + 1
-                elif 101 < application_instance.applicant.points < 300:
+                elif 101 < application_instance.applicant.badge == 2:
                     application_badges[1] = application_badges[1] + 1
-                elif 301 < application_instance.applicant.points < 500:
+                elif 301 < application_instance.applicant.badge == 3:
                     application_badges[2] = application_badges[2] + 1
-                elif 501 < application_instance.applicant.points < 1000:
+                elif 501 < application_instance.applicant.badge == 4:
                     application_badges[3] = application_badges[3] + 1
-                elif application_instance.applicant.points > 1000:
+                elif application_instance.applicant.points == 5:
                     application_badges[4] = application_badges[4] + 1
             # ratings
             rates = [0, 0, 0, 0, 0]
