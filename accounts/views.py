@@ -101,10 +101,19 @@ class GetUserApiView(APIView):
             applications = Application.objects.filter(applicant=user)
             hired_rate = 0
             no_of_applications = 0
+            under_process = 0
             for application in applications:
                 if application.status == 'hired':
                     hired_rate = hired_rate + 1
+                elif application.status == 'underprocess':
+                    under_process = under_process + 1
                 no_of_applications = no_of_applications + 1
+
+            application_info = {
+                'applications': no_of_applications,
+                'hires': hired_rate,
+                'underprocess': under_process
+            }
             hired_rate = hired_rate * 100 / no_of_applications
             time_spend = TimeSpend.objects.filter(user=user)
             hours_spend = 0
@@ -114,13 +123,46 @@ class GetUserApiView(APIView):
             user = Account.objects.get(username=user)
             model = joblib.load("influmodel.sav")
             badge = model.predict([[no_of_applications, hired_rate, hours_spend, user.rate * 20]])
-            print(badge)
             user.badge = badge
             user.save()
+            application_info['timespent'] = hours_spend
             serialzer = AccountSerializer(user)
-            return Response(serialzer.data)
+            return Response({'user': serialzer.data, 'application': application_info})
         except:
             return Response({'error': ''})
+
+
+class GetDisplayUserApiView(APIView):
+
+    def post(self, request, format=None):
+        try:
+            user = Account.objects.get(username=self.request.data['username'])
+            applications = Application.objects.filter(applicant=user)
+            hired_rate = 0
+            no_of_applications = 0
+            under_process = 0
+            for application in applications:
+                if application.status == 'hired':
+                    hired_rate = hired_rate + 1
+                elif application.status == 'underprocess':
+                    under_process = under_process + 1
+                no_of_applications = no_of_applications + 1
+
+            application_info = {
+                'applications': no_of_applications,
+                'hires': hired_rate,
+                'underprocess': under_process
+            }
+            time_spend = TimeSpend.objects.filter(user=user)
+            hours_spend = 0
+            for time_elem in time_spend:
+                hours_spend = hours_spend + time_elem.time
+            hours_spend = hours_spend / 60
+            application_info['timespent'] = hours_spend
+            serialzer = AccountSerializer(user)
+            return Response({'user': serialzer.data, 'application': application_info})
+        except:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class CheckAuthentication(APIView):
