@@ -114,7 +114,10 @@ class GetUserApiView(APIView):
                 'hires': hired_rate,
                 'underprocess': under_process
             }
-            hired_rate = hired_rate * 100 / no_of_applications
+            if no_of_applications == 0:
+                hired_rate = 0
+            else:
+                hired_rate = hired_rate * 100 / no_of_applications
             time_spend = TimeSpend.objects.filter(user=user)
             hours_spend = 0
             for time_elem in time_spend:
