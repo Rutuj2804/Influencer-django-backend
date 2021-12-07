@@ -23,10 +23,12 @@ class RegisterUser(APIView):
             password = data['password']
             city = data['city']
             state = data['state']
+            company = data['isCompany']
             if first_name != '' and username != '' and email != '' and city != '' and state != '':
                 if not Account.objects.filter(username=username).exists():
                     user = Account.objects.create_user(first_name=first_name, email=email, username=username, password=password, city=city, state=state)
                     user.last_name = last_name
+                    user.isCompany = company
                     user.save()
                     token = Token.objects.create(user=user)
                     return Response({'token':token.key}, status=status.HTTP_201_CREATED)
